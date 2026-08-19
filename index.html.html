@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Radar — Cloud &amp; Technical Support Contracts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+  :root{
+    --bg:#10151b;
+    --panel:#171e27;
+    --panel-2:#1d2530;
+    --border:#2a3542;
+    --border-soft:#212a35;
+    --text:#e7ecf1;
+    --text-dim:#8a97a5;
+    --text-faint:#5b6774;
+    --amber:#e2a542;
+    --amber-dim:#9c7433;
+    --cyan:#4fb6c4;
+    --green:#5fae7a;
+    --red:#c25450;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Mono',monospace;
+    padding:32px 20px 60px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  .header{
+    position:relative;
+    padding:28px 28px 26px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    margin-bottom:28px;
+    overflow:hidden;
+  }
+  .sweep{
+    position:absolute;
+    top:-120px; right:-120px;
+    width:280px; height:280px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(226,165,66,0.16), transparent 30%);
+    animation:spin 6s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .eyebrow{
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--amber); margin:0 0 10px; font-weight:600;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:28px; font-weight:700; margin:0 0 8px; letter-spacing:-0.01em;
+    position:relative;
+  }
+  .sub{
+    font-size:13px; color:var(--text-dim); margin:0; max-width:560px; line-height:1.6;
+    position:relative;
+  }
+
+  .section-label{
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--text-faint); margin:0 0 12px; font-weight:600;
+    display:flex; align-items:center; gap:8px;
+  }
+  .section-label::before{
+    content:''; width:6px; height:6px; background:var(--amber);
+  }
+
+  .scan-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:10px;
+    margin-bottom:34px;
+  }
+  .scan-card{
+    display:block;
+    background:var(--panel);
+    border:1px solid var(--border);
+    padding:16px 18px;
+    text-decoration:none;
+    color:var(--text);
+    transition:border-color .15s, background .15s;
+  }
+  .scan-card:hover{
+    border-color:var(--amber-dim);
+    background:var(--panel-2);
+  }
+  .scan-top{
+    display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;
+  }
+  .scan-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:15px; font-weight:600;
+  }
+  .scan-arrow{ color:var(--amber); font-size:14px; }
+  .scan-desc{ font-size:12px; color:var(--text-dim); line-height:1.5; margin:0; }
+  .scan-tag{
+    display:inline-block; font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--cyan); border:1px solid var(--cyan); padding:2px 6px; margin-top:8px;
+  }
+
+  .note{
+    font-size:12px; color:var(--text-faint); border-left:2px solid var(--border);
+    padding:10px 14px; margin-bottom:34px; line-height:1.6;
+  }
+
+  .tracker{
+    background:var(--panel);
+    border:1px solid var(--border);
+    padding:20px 22px 22px;
+  }
+  .form-row{
+    display:grid;
+    grid-template-columns:1.3fr 1.3fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .form-row2{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  input, select{
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    padding:9px 10px;
+    outline:none;
+  }
+  input::placeholder{ color:var(--text-faint); }
+  input:focus, select:focus{ border-color:var(--amber-dim); }
+  select{ appearance:none; cursor:pointer; }
+  button{
+    background:var(--amber);
+    border:1px solid var(--amber);
+    color:#1a1508;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; font-weight:600;
+    padding:9px 16px;
+    cursor:pointer;
+    letter-spacing:.02em;
+  }
+  button:hover{ background:#eeb95c; }
+  button.ghost{
+    background:transparent; color:var(--text-dim); border:1px solid var(--border);
+    font-weight:400; padding:5px 10px; font-size:11px;
+  }
+  button.ghost:hover{ border-color:var(--red); color:var(--red); }
+
+  .err{ font-size:11px; color:var(--red); margin:-4px 0 10px; display:none; }
+
+  table{ width:100%; border-collapse:collapse; margin-top:6px; }
+  th{
+    text-align:left; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-faint); font-weight:600; padding:8px 8px; border-bottom:1px solid var(--border);
+  }
+  td{
+    font-size:12px; padding:9px 8px; border-bottom:1px solid var(--border-soft); vertical-align:middle;
+  }
+  td.company{ font-weight:600; }
+  td a{ color:var(--cyan); text-decoration:none; }
+  td a:hover{ text-decoration:underline; }
+  .status-pill{
+    font-size:10px; padding:3px 8px; border:1px solid; text-transform:uppercase; letter-spacing:.04em;
+    display:inline-block; background:transparent;
+  }
+  .status-applied{ color:var(--cyan); border-color:var(--cyan); }
+  .status-interview{ color:var(--green); border-color:var(--green); }
+  .status-rejected{ color:var(--red); border-color:var(--red); }
+  .status-offer{ color:var(--amber); border-color:var(--amber); }
+  .empty{
+    padding:26px 4px; text-align:center; color:var(--text-faint); font-size:12px;
+  }
+  .count{ color:var(--text-dim); font-weight:400; }
+
+  @media (max-width:640px){
+    .form-row{ grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="sweep"></div>
+    <p class="eyebrow">Job radar // contract track</p>
+    <h1>Startup signal console</h1>
+    <p class="sub">Pre-filtered scan sources for remote technical support, cloud support, and infrastructure support contracts at startups founded in the last 1-2 years, plus a log so nothing gets re-searched twice.</p>
+  </div>
+
+  <p class="section-label">Scan sources</p>
+  <div class="scan-grid">
+
+    <a class="scan-card" href="https://www.ycombinator.com/jobs/role/support/remote" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">YC — Support &amp; success, remote</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Every remote support/success posting across YC startups. Filter by newest, then batch (S25/W26 = last 1-2 years).</p>
+      <span class="scan-tag">Confirmed live filter</span>
+    </a>
+
+    <a class="scan-card" href="https://www.workatastartup.com/jobs" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">YC — Work at a Startup</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Full YC job board. Search "devops" or "cloud support" in the box, filter role + remote + batch yourself.</p>
+      <span class="scan-tag">Manual keyword search</span>
+    </a>
+
+    <a class="scan-card" href="https://wellfound.com/role/r/technical-support" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">Wellfound — Technical support</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Then apply the "Early stage" tag on the left filter panel to isolate 0-2 year old companies.</p>
+      <span class="scan-tag">Confirmed live filter</span>
+    </a>
+
+    <a class="scan-card" href="https://wellfound.com/remote" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">Wellfound — Remote, DevOps role</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Set role to DevOps Engineer in the filter bar, then add the "Early stage" tag.</p>
+      <span class="scan-tag">Filter in-page</span>
+    </a>
+
+    <a class="scan-card" href="https://wellfound.com/role/r/cloud-engineer" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">Wellfound — Cloud engineer</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Covers cloud support and cloud infrastructure titles. Add "Remote" and "Early stage" tags in the filter bar.</p>
+      <span class="scan-tag">Confirmed live filter</span>
+    </a>
+
+    <a class="scan-card" href="https://wellfound.com/role/r/infrastructure-engineer" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">Wellfound — Infrastructure engineer</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Infrastructure support and infrastructure engineer postings. Add "Remote" and "Early stage" tags.</p>
+      <span class="scan-tag">Confirmed live filter</span>
+    </a>
+
+    <a class="scan-card" href="https://topstartups.io/?hq_location=Remote" target="_blank" rel="noopener">
+      <div class="scan-name" style="margin-bottom:6px;display:block;">topstartups.io — Remote, newly funded</div>
+      <p class="scan-desc">Sort by "Founded" descending, funding stage Seed/Series A. These are the ones actually hiring right now.</p>
+      <span class="scan-tag">Manual sort</span>
+    </a>
+
+    <a class="scan-card" href="https://www.ycombinator.com/companies?batch=S25&batch=W26" target="_blank" rel="noopener">
+      <div class="scan-top"><span class="scan-name">YC directory — S25 + W26 batches</span><span class="scan-arrow">&#8594;</span></div>
+      <p class="scan-desc">Every company in the last two batches. Open each and check its own jobs page for support, cloud, or infrastructure postings YC's job board hasn't indexed yet.</p>
+      <span class="scan-tag">Deep scan</span>
+    </a>
+
+  </div>
+
+  <p class="note">Deep-link filters on hosted job boards shift without notice, that's normal, not a broken tool. If a link lands on an unfiltered page, the role and remote filters are one click away in the sidebar. Re-scan twice a week; daily is wasted motion for boards that don't refresh that often.</p>
+
+  <p class="section-label">Application log</p>
+  <div class="tracker">
+    <div class="form-row">
+      <input id="in-company" placeholder="Company" />
+      <input id="in-role" placeholder="Role" />
+      <select id="in-source">
+        <option value="">Source</option>
+        <option>YC</option>
+        <option>Wellfound</option>
+        <option>topstartups.io</option>
+        <option>Upwork</option>
+        <option>Direct</option>
+        <option>Other</option>
+      </select>
+      <select id="in-status">
+        <option value="applied">Applied</option>
+        <option value="interview">Interview</option>
+        <option value="offer">Offer</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+    <div class="form-row2">
+      <input id="in-url" placeholder="Job posting URL" />
+      <button id="btn-add">Add entry</button>
+    </div>
+    <p class="err" id="err">Enter a company and role first.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Role</th>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Link</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="log-body"></tbody>
+    </table>
+    <div class="empty" id="empty-state" style="display:none;">No entries yet. Log what you apply to as you scan.</div>
+  </div>
+
+</div>
+
+<script>
+const STORE_KEY = 'job-radar-log';
+let entries = [];
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function render(){
+  const body = document.getElementById('log-body');
+  const empty = document.getElementById('empty-state');
+  if(!entries.length){
+    body.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  body.innerHTML = entries.slice().reverse().map((e, revIdx) => {
+    const idx = entries.length - 1 - revIdx;
+    const statusClass = 'status-' + e.status;
+    const link = e.url ? `<a href="${escapeHtml(e.url)}" target="_blank" rel="noopener">open</a>` : '<span style="color:var(--text-faint)">-</span>';
+    return `<tr>
+      <td class="company">${escapeHtml(e.company)}</td>
+      <td>${escapeHtml(e.role)}</td>
+      <td>${escapeHtml(e.source || '-')}</td>
+      <td>
+        <select data-idx="${idx}" class="status-select">
+          <option value="applied" ${e.status==='applied'?'selected':''}>Applied</option>
+          <option value="interview" ${e.status==='interview'?'selected':''}>Interview</option>
+          <option value="offer" ${e.status==='offer'?'selected':''}>Offer</option>
+          <option value="rejected" ${e.status==='rejected'?'selected':''}>Rejected</option>
+        </select>
+      </td>
+      <td>${link}</td>
+      <td><button class="ghost" data-del="${idx}">Remove</button></td>
+    </tr>`;
+  }).join('');
+
+  body.querySelectorAll('.status-select').forEach(sel => {
+    sel.addEventListener('change', async (ev) => {
+      const idx = parseInt(ev.target.getAttribute('data-idx'), 10);
+      entries[idx].status = ev.target.value;
+      await save();
+      render();
+    });
+  });
+  body.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', async (ev) => {
+      const idx = parseInt(ev.target.getAttribute('data-del'), 10);
+      entries.splice(idx, 1);
+      await save();
+      render();
+    });
+  });
+}
+
+function save(){
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify(entries));
+  }catch(e){
+    console.error('Storage save failed', e);
+  }
+}
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    entries = raw ? JSON.parse(raw) : [];
+  }catch(e){
+    entries = [];
+  }
+  render();
+}
+
+document.getElementById('btn-add').addEventListener('click', async () => {
+  const company = document.getElementById('in-company').value.trim();
+  const role = document.getElementById('in-role').value.trim();
+  const source = document.getElementById('in-source').value;
+  const status = document.getElementById('in-status').value;
+  const url = document.getElementById('in-url').value.trim();
+  const err = document.getElementById('err');
+
+  if(!company || !role){
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  entries.push({ company, role, source, status, url });
+  await save();
+  render();
+
+  document.getElementById('in-company').value = '';
+  document.getElementById('in-role').value = '';
+  document.getElementById('in-source').value = '';
+  document.getElementById('in-status').value = 'applied';
+  document.getElementById('in-url').value = '';
+  document.getElementById('in-company').focus();
+});
+
+load();
+</script>
+</body>
+</html>
